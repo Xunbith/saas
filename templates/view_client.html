@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр клиента</title>
+</head>
+<body>
+    <h1>Просмотр клиента</h1>
+    <p><strong>Имя:</strong> {{ client.first_name }}</p>
+    <p><strong>Фамилия:</strong> {{ client.last_name }}</p>
+    <p><strong>Электронная почта:</strong> {{ client.email }}</p>
+    <p><strong>Телефон:</strong> {{ client.phone }}</p>
+    <p><strong>Адрес:</strong> {{ client.address }}</p>
+
+    <h2>Заметки</h2>
+    <ul>
+        {% for note in client.notes %}
+        <li>{{ note.note }} - {{ note.created_at }}</li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="{{ url_for('clients') }}">Назад к списку клиентов</a>
+</body>
+</html>

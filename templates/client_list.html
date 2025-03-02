@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список клиентов</title>
+    <style>
+        /* Фон с анимацией плавных переходов */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(45deg, #f8b8d1, #ffaad3, #f9d6e4, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s ease infinite;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Анимация для фона */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Контейнер для контента */
+        .container {
+            padding: 30px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1300px;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #ff5c8d;
+        }
+
+        h2 {
+            color: #ff5c8d;
+            font-size: 1.8em;
+            margin-top: 20px;
+        }
+
+        /* Ссылки */
+        a {
+            color: #ff5c8d;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #ff3b6e;
+        }
+
+        /* Карточка клиента */
+        .client-card {
+            background-color: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .client-card:hover {
+            background-color: #f9d6e4;
+        }
+
+        .client-info {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        /* Форма заметки */
+        .note-form {
+            background-color: #ffdde1;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .note-form label {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .note-form textarea {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            resize: vertical; /* Позволяет увеличивать высоту поля */
+            transition: border-color 0.3s ease;
+        }
+
+        .note-form textarea:focus {
+            border-color: #ff5c8d;
+            outline: none;
+        }
+
+        /* Слайдер выбора клиента */
+        .note-form select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            background-color: #fff;
+            transition: border-color 0.3s ease;
+        }
+
+        .note-form select:focus {
+            border-color: #ff5c8d;
+            outline: none;
+        }
+
+        .note-form button {
+            background-color: #ff5c8d;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .note-form button:hover {
+            background-color: #ff3b6e;
+        }
+
+        /* Кнопки */
+        button {
+            background-color: #ff5c8d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff3b6e;
+        }
+
+        /* Кнопка "Выйти" */
+        .logout-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #d9534f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Список клиентов</h1>
+
+        <!-- Список клиентов -->
+        <div>
+            {% for client in clients %}
+                <div class="client-card">
+                    <div class="client-info">
+                        <strong>{{ client.first_name }} {{ client.last_name }}</strong><br>
+                        <span>{{ client.email }}</span>
+                    </div>
+                    <a href="{{ url_for('edit_client', client_id=client.id) }}">
+                        <button class="edit-btn">Редактировать</button>
+                    </a>
+
+                    <a href="{{ url_for('view_notes', client_id=client.id) }}">
+                         <button class="edit-btn">Просмотр заметок</button>
+                    </a>
+
+                    <!-- Кнопка удаления клиента -->
+                    <form action="{{ url_for('delete_client', client_id=client.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="delete-btn">Удалить</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Добавить заметку -->
+        <div class="note-form">
+            <h2>Добавить заметку для клиента</h2>
+            <form method="POST" action="{{ url_for('add_note') }}">
+                <label for="client_id">Выберите клиента</label>
+                <select name="client_id" id="client_id" required>
+                    <option value="" disabled selected>Выберите клиента</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client.first_name }} {{ client.last_name }}</option>
+                    {% endfor %}
+                </select><br><br>
+
+                <label for="note">Заметка</label>
+                <textarea name="note" id="note" rows="4" required></textarea><br><br>
+
+                <button type="submit">Добавить заметку</button>
+            </form>
+        </div>
+
+        <!-- Выйти -->
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit" class="logout-btn">Выйти</button>
+        </form>
+    </div>
+</body>
+</html>

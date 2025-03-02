@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали клиента - {{ client.first_name }} {{ client.last_name }}</title>
+    <style>
+        /* Фон с анимацией плавных переходов */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(45deg, #f8b8d1, #ffaad3, #f9d6e4, #ffdde1);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s ease infinite;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Анимация для фона */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Контейнер для контента */
+        .container {
+            padding: 30px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 1300px;
+            margin-top: 50px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #ff5c8d;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #ff5c8d;
+            margin-top: 20px;
+        }
+
+        /* Ссылки */
+        a {
+            color: #ff5c8d;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #ff3b6e;
+        }
+
+        /* Стили для списка заметок */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        /* Кнопка удаления */
+        button {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Детали клиента - {{ client.first_name }} {{ client.last_name }}</h1>
+
+        <h2>Заметки</h2>
+        <ul>
+            {% for note in notes %}
+                <li>
+                    {{ note.created_at.strftime('%d-%m-%Y %H:%M') }}: {{ note.note }}
+                    <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" style="display:inline;">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </li>
+            {% else %}
+                <li>Заметок нет.</li>
+            {% endfor %}
+        </ul>
+
+        <br>
+        <a href="{{ url_for('clients') }}">Назад к списку клиентов</a>
+    </div>
+</body>
+</html>
