@@ -188,7 +188,9 @@
 <body>
     <div class="container">
         <h1>Список клиентов</h1>
-
+        <a href="{{ url_for('new_client') }}">
+            <button class="add-client-btn">Добавить нового клиента</button>
+        </a>
         <!-- Список клиентов -->
         <div>
             {% for client in clients %}
