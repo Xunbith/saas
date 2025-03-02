@@ -101,9 +101,9 @@
             {% for note in notes %}
                 <li>
                     {{ note.created_at.strftime('%d-%m-%Y %H:%M') }}: {{ note.note }}
-                    <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" style="display:inline;">
-                        <button type="submit">Удалить</button>
-                    </form>
+<form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" style="display:inline;">
+    <button type="submit">Удалить</button>
+</form>
                 </li>
             {% else %}
                 <li>Заметок нет.</li>
